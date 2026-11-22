@@ -18,7 +18,7 @@ rule kallisto_index:
         OUT + "/logs/kallisto_index/kallisto_index.log",
     threads: THR["kallisto_index"]
     resources:
-        mem_mb=16000,
+        mem_mb=32000,
     conda:
         "../envs/kallisto.yaml"
     shell:
