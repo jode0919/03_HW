@@ -1,0 +1,80 @@
+# ---------------------------------------------------------------------------
+# Main configuration. Edit this file (not the Snakefile) to run a new dataset.
+# ---------------------------------------------------------------------------
+
+# Sample sheet (tab-separated; columns: sample, fastq1, fastq2 [empty = single-end])
+samples: config/samples.tsv
+
+# Output directory
+outdir: results
+
+# Library strandedness used for featureCounts and kallisto.
+#   auto       -> inferred per sample from RSeQC infer_experiment.py
+#   unstranded | forward | reverse -> force the same value for all samples
+strandedness: auto
+# In auto mode: fraction of strand-explained reads needed to call a library stranded
+strand_threshold: 0.8
+
+# Reference files (created by scripts/prepare_reference.sh; any GENCODE-style
+# genome FASTA / GTF / transcript FASTA of the same species can be used)
+reference:
+  genome_fasta: reference/genome.fa
+  gtf: reference/annotation.gtf
+  transcripts_fasta: reference/transcripts.fa.gz
+  star_index: reference/star_index
+  kallisto_index: reference/kallisto/transcripts.idx
+  bed12: reference/annotation.bed12        # built from the GTF if missing
+
+trimming:                  # fastp
+  min_quality: 20          # per-base phred quality for sliding-window / qualified bases
+  min_length: 30           # discard reads shorter than this after trimming
+  extra: ""                # any extra fastp options
+
+star:
+  sjdb_overhang: 100       # read length - 1 (100 works well for reads of 75-150 bp)
+  extra: ""
+
+featurecounts:
+  feature_type: exon
+  attribute: gene_id
+  extra: ""
+
+kallisto:
+  bootstraps: 30
+  fragment_length_mean: 200   # only used for single-end data
+  fragment_length_sd: 20      # only used for single-end data
+  extra: ""
+
+rseqc:
+  infer_sample_size: 200000   # reads used by infer_experiment.py
+  inner_distance_reads: 1000000
+  # Gene body coverage on all genes is slow. Optionally give a BED12 with housekeeping
+  # genes (RSeQC provides hg38.HouseKeepingGenes.bed). Empty = use reference.bed12.
+  genebody_bed: ""
+
+deeptools:
+  bin_size: 10000             # multiBamSummary bin size
+  cor_method: spearman        # spearman | pearson
+  bigwig: true                # make CPM-normalised bigWig tracks (for IGV)
+  bigwig_bin_size: 10
+
+# Threads per job (Snakemake caps these by --cores)
+threads:
+  fastqc: 2
+  fastp: 4
+  star_index: 16
+  star: 8
+  samtools: 2
+  featurecounts: 4
+  kallisto_index: 2
+  kallisto: 4
+  rseqc: 1
+  deeptools: 4
+  multiqc: 1
+
+# Memory per job in MB (used by Snakemake when --resources mem_mb=... is set)
+resources:
+  star_index_mem_mb: 40000
+  star_mem_mb: 36000
+  default_mem_mb: 4000
+  deeptools_mem_mb: 8000

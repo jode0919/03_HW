@@ -1,0 +1,38 @@
+# Raw / large data
+sra/
+fastq/
+*.sra
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
+accessions_srr.txt
+
+# Reference files and indices (rebuild with scripts/prepare_reference.sh)
+reference/*
+!reference/.gitkeep
+
+# Workflow outputs
+results/
+*.bam
+*.bai
+*.bw
+*.npz
+
+# Snakemake / conda internals
+.snakemake/
+.conda/
+
+# Logs / temp
+*.log
+nohup.out
+tmp/
+
+# Python / R / editor / OS
+__pycache__/
+.ipynb_checkpoints/
+.Rhistory
+.RData
+.vscode/
+.DS_Store
+!reference/VERSION.txt

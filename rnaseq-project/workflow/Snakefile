@@ -1,0 +1,22 @@
+# RNA-seq workflow: QC/trimming -> STAR + featureCounts -> kallisto -> alignment QC
+# Run:  snakemake --use-conda --cores 16 --resources mem_mb=48000
+configfile: "config/config.yaml"
+
+
+include: "rules/common.smk"
+
+
+wildcard_constraints:
+    sample="|".join(re.escape(s) for s in SAMPLES) or "__none__",
+
+
+include: "rules/qc_trim.smk"
+include: "rules/align.smk"
+include: "rules/quant.smk"
+include: "rules/aln_qc.smk"
+include: "rules/report.smk"
+
+
+rule all:
+    input:
+        final_targets(),
