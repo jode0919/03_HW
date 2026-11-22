@@ -1,0 +1,45 @@
+cat > .gitignore << 'EOF'
+# Raw / large data
+raw/
+new/
+*.sra
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
+
+# Reference genome files
+reference/
+*.fa
+*.fa.gz
+*.fasta
+*.gtf
+*.gtf.gz
+*.gff3.gz
+
+# Alignment / quantification outputs
+*.bam
+*.bai
+*.sam
+*.cram
+*.bt2
+*.idx
+star_index/
+salmon_index/
+results/
+
+# Logs and temp
+*.log
+nohup.out
+tmp/
+*.tmp
+
+# Python / R / editor
+__pycache__/
+.ipynb_checkpoints/
+.Rhistory
+.RData
+.Rproj.user/
+.vscode/
+.DS_Store
+EOF
