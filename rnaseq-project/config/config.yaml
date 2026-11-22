@@ -32,6 +32,7 @@ trimming:                  # fastp
 
 star:
   sjdb_overhang: 100       # read length - 1 (100 works well for reads of 75-150 bp)
+  index_extra: "--genomeSAsparseD 2"
   extra: ""
 
 featurecounts:
@@ -50,7 +51,7 @@ rseqc:
   inner_distance_reads: 1000000
   # Gene body coverage on all genes is slow. Optionally give a BED12 with housekeeping
   # genes (RSeQC provides hg38.HouseKeepingGenes.bed). Empty = use reference.bed12.
-  genebody_bed: ""
+  genebody_bed: "reference/genebody_subset.bed12"
 
 deeptools:
   bin_size: 10000             # multiBamSummary bin size
@@ -74,7 +75,7 @@ threads:
 
 # Memory per job in MB (used by Snakemake when --resources mem_mb=... is set)
 resources:
-  star_index_mem_mb: 40000
-  star_mem_mb: 36000
+  star_index_mem_mb: 32000
+  star_mem_mb: 28000
   default_mem_mb: 4000
   deeptools_mem_mb: 8000

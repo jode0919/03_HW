@@ -13,7 +13,8 @@ rule star_index:
     params:
         dir=REF["star_index"],
         overhang=config["star"]["sjdb_overhang"],
-        ram=lambda wc, resources: int(resources.mem_mb) * 1_000_000,
+        extra=config["star"].get("index_extra", ""),
+        ram=lambda wc, resources: int(resources.mem_mb * 0.8) * 1_000_000,
     log:
         OUT + "/logs/star_index/star_index.log",
     threads: THR["star_index"]
@@ -26,7 +27,7 @@ rule star_index:
         STAR --runMode genomeGenerate --runThreadN {threads} \
              --genomeDir {params.dir} --genomeFastaFiles {input.fasta} \
              --sjdbGTFfile {input.gtf} --sjdbOverhang {params.overhang} \
-             --limitGenomeGenerateRAM {params.ram} \
+             --limitGenomeGenerateRAM {params.ram} {params.extra} \
              --outFileNamePrefix {params.dir}/ > {log} 2>&1
         """
 
