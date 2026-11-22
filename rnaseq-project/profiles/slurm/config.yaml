@@ -1,0 +1,25 @@
+executor: slurm
+
+jobs: 30
+
+use-conda: true
+
+conda-prefix: /scratch/lustre/home/hpc_jode0919hpc/snakemake-conda-envs
+
+latency-wait: 60
+
+rerun-incomplete: true
+
+printshellcmds: true
+
+default-resources:
+
+- slurm_account=alloc_13d46_s2411492vult
+- slurm_partition=main
+- runtime=240
+set-resources:
+
+  - star_index:runtime=480
+
+  - star_align:runtime=360
+

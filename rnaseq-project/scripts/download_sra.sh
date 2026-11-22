@@ -28,6 +28,6 @@ while read -r acc; do
     fi
     prefetch "$acc" -O sra
     vdb-validate sra/"$acc"/"$acc".sra
-    fasterq-dump sra/"$acc" -O fastq --split-files -e "$THREADS"
+    fasterq-dump sra/"$acc" -O fastq --split-3 -e "$THREADS"
     gzip -f fastq/"$acc"*.fastq
 done < accessions_srr.txt
